@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    {%load static%}
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- google fonts -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre&display=swap" rel="stylesheet">
+
+    <!-- my css -->
+    <link rel="stylesheet" href="{% static 'css/sign.css'%}" type="text/css">
+</head>
+<body>
+    <div class="parent-container">
+
+        <div class="header">
+
+            <div class="nav">
+                <a href="" class="nav-item">About</a>
+                <a href="" class="nav-item">Contact</a>
+                <a href="show_login" class="nav-item_login">Login</a>
+            </div>
+        </div>
+
+        <div class="main">
+
+            
+
+            <div class="circle">
+
+                <h1>SIGN UP</h1>
+
+                <form class="sign_up" action="registration_completed" method="post">
+
+                    {%csrf_token%}
+
+                    <input type="text" name="username" placeholder="Username" class="item1" required value="{{a}}">
+                    <input type="text" name="mobile" placeholder="Mobile" class="item2" required value="{{b}}">
+                    <input type="email" name="email" placeholder="Email" class="item3" required value="{{c}}">
+                    <input type="password" name="password" placeholder="Password" class="item4" required onchange="onChange()" value="{{d}}">
+                    <input type="text" name="confirm" placeholder="Confirm Password" class="item5" onchange="onChange()" value="{{e}}">
+                    <input type="submit" value="SIGN UP" id="but1" class="item6">
+
+
+                </form>
+
+                 {%if 'Username Already in Use..!' in message%}
+                    <p id="message_fail">{{message}}</p>
+
+                    <style>
+                        #message_fail{
+                        color:red;
+                        background:white;
+                        border-radius:8px;
+                        position:relative;
+
+                        top:80px;
+
+                        }
+
+                        .item1{
+                        border:2px solid red;
+                        }
+                    </style>
+                    {%endif%}
+
+                    {%if 'Registration Successful Please Login' in message%}
+                    <p id="message_success">{{message}}</p>
+                    <style>
+                        #message_success{
+                        color:green;
+                        background:white;
+                        position:relative;
+
+                        top:80px;
+                        border-radius:8px;
+                        }
+                    </style>
+                    {%endif%}
+
+
+
+            </div>
+
+            <div class="welcome">
+
+                <h1>WELCOME</h1>
+                <h1>TO</h1>
+                <h1>OUR</h1>
+                <h1>FAMILY</h1>
+
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <div class="social_icons">
+                <img src="static/icons/Instagram - Negative.svg" alt="" class="icons">
+                <img src="static/icons/whatsapp.svg" alt="" class="icons">
+                <img src="static/icons/facebook.svg" alt="" class="icons">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- my js -->
+
+    <script src="{% static 'js/sign.js' %}"></script>
+
+</body>
+</html>

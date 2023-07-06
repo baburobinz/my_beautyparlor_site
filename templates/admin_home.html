@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    {%load static%}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     <!-- jquery   -->
+
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <!-- my css -->
+    <link rel="stylesheet" href="{% static 'css/admin_home.css' %}">
+    
+
+    <title>Admin Home</title>
+
+
+
+    
+
+</head>
+<body>
+
+    <div class="main-container">
+
+        <div class="navbar">
+
+            <div>
+                <a class="nav-item home" onclick="select(0)">Home <div class="notification_count">
+
+                </div> </a>
+                <a class="nav-item" onclick="select(1)">Profile</a>
+                <a class="nav-item" onclick="select(2)" id="bookings">Bookings</a>
+                <a class="nav-item nav_upload" onclick="select(3)">Uploads</a>
+                <a href="logout"class="nav-item"> Logout</a>
+            </div>
+            
+        </div>
+
+        <div class="profile-submenu">
+            <a class="submenu-item" onclick="show(0)">Change Username</a>
+            <a class="submenu-item" onclick="show(1)">Change Password</a>
+        </div>
+
+        <div class="uploads">
+            <a class="upload-item" onclick="show(2)" id="gallery">Gallery</a>
+            <a class="upload-item" onclick="show(3)" id="price">Price</a>
+            <a class="upload-item" onclick="show(4)" id="offer">Offer</a>
+        </div>
+
+    
+
+        <div class="content-container">
+
+
+            <div class="home-content">
+
+                <div class="home-content-nav">
+
+                    <h3 class="notification-head">Booking Notifications</h3>
+
+                    <a class="clear_all" onclick="clear_all_submenu()">Clear All</a>
+
+                    
+                </div>
+
+                <div class="confirm_clear_all">
+
+                    <h3>Do you want to clear all.?</h3>
+
+                    <div class="yes_no">
+
+                        <a class="yes">Yes</a>
+                        <a class="no">No</a>
+                    </div>
+                </div>
+
+                <div class="no_notification">No Notifications</div>
+
+                <div class="notification-window">
+
+                    
+
+                     <!-- <div class="notification">
+                        <img src="{% static 'icons/tick_mark.png' %}" alt="" class="icon-size">
+                        
+                        <p class="notification_success"></p>
+
+                       
+
+                        <img src="{% static 'icons/close_notification_green.png' %}" alt="" class="close">
+
+                            
+
+
+                      
+                    </div> -->
+
+
+
+
+                     <!-- <div class="notification2">
+                        <img src="{% static 'icons/close_mark.png' %}" alt="" class="icon-size">
+
+
+                        <p class="notification_cancelled"></p>
+
+                       
+                        <img src="{% static 'icons/close_notification_red.png' %}" alt="" class="close">
+                    </div> -->
+                </div>
+                
+
+            </div>
+
+            <div class="booking-content">
+                
+                <div class="book-content-nav">
+
+                    <div class="book-nav-item1">
+
+                        <a onclick="show_hide_home_menu(0)" class="book-nav-item-item1">Sort By</a>
+                        <a onclick="show_hide_home_menu(1)" class="book-nav-item-item1" id="clear_all">Clear All</a>
+
+                    </div>
+
+
+
+                   
+
+                    <form action="search_on_date" method="post" class="book-nav-item2" id="search_by_date">
+
+                        {%csrf_token%}
+                    
+                        <input type="date" name="date">
+                        <button type="submit">Search</button>
+    
+                    </form>
+
+                    <div class="sort-submenu">
+                        <a class="sort-item" id="latest">Latest</a>
+                        <a class="sort-item" id="oldest">Oldest</a>
+                    </div>
+
+                    <div class="clear-submenu">
+
+                        Do you want to clear.?
+
+                        <div>
+                            <a class="clear-item1">Yes</a>
+                            <a class="clear-item2">No</a>
+                        </div>
+                       
+                    </div>
+
+
+                </div>
+
+               
+
+                <div class="table-layout">
+
+                    <h3 class="no_booking_message">No Booking</h3>
+
+                    <table border="1" class="booking-table">
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Date</th>
+                                <th>Slot</th>
+                                <th>Token N.O</th>
+                                <th>Name</th>
+                                <th>Service</th>
+                                <th>Mobile</th>
+    
+                            </tr>
+                            
+                        </thead>
+
+
+                       
+
+                        <tbody>
+
+
+
+                        </tbody>
+
+                        
+
+                        
+
+                    </table>
+                </div>    
+            </div>
+
+
+            <div class="message_Success_or_fail">
+                <p></p>
+                <button class="ok">OK</button>
+            </div>
+
+
+            <div class="change_uname_pword_container content">
+
+
+
+                <form action="change_admin_username" method="post" class="change_uname_pword" id="change_username">
+                    {%csrf_token%}
+
+                    <h4>CHANGE USERNAME</h4>
+                    <input type="text" name="username" placeholder="Username" class="input" required>
+                    <input type="text" name="Password" placeholder="Password" class="input" required>
+                    <input type="text" name="newusername" id="" placeholder="New Username" class="input" required>
+                    <input type="submit" value="UPDATE" class="update_button">
+    
+               
+    
+                </form>
+
+
+            </div> 
+
+
+            <div class="change_uname_pword_container content">
+
+                <form action="change_admin_password" method="post" class="change_uname_pword" id="change_password">
+                    {%csrf_token%}
+
+                    <h4>CHANGE PASSWORD</h4>
+                    <input type="text" name="username" placeholder="Username" class="input" required>
+                    <input type="text" name="password" placeholder="Password" class="input" required>
+                    <input type="text" name="newpassword" placeholder="New Password" class="input" onchange="onChange()">
+                    <input type="text" name="cofirmpassword" placeholder="Confirm Password" class="input" onchange="onChange()">
+                    <input type="submit" value="UPDATE" class="update_button">
+    
+                </form>
+     
+
+
+            </div>
+    
+               
+
+
+
+           
+
+            
+
+            <div class="gallery_window content">
+
+
+                <div class="gallery_nav">
+
+                    <div class="nav_item">
+
+                        <a class="delete_all">Delete All</a>
+
+                    </div>
+
+
+                    <form action="upload_gallery" method="POST" enctype="multipart/form-data" class="item1" id="image_upload_form">
+                
+                        {%csrf_token%}
+                        
+                       <input type="file" name="files" multiple id="file">
+                       <input type="submit" value="Upload" class="upload_button">
+        
+                    </form>
+
+                   
+
+    
+
+
+                </div>
+
+
+                <div class="delete_confirm_window">
+
+                    <h4>Do you want to delete all.?</h4>
+
+                    <div class="yesno">
+
+                        <a class="gallery_delete_yes">Yes</a>
+                        <a class="gallery_delete_no">No</a>
+                    </div>
+                </div>
+
+
+                <div class="upload_success_message"><h4>upload success</h4><img src="{%static 'icons/tick_mark.png'%}" alt=""></div> 
+
+
+                <div class="item3" id="display_images">
+
+                   
+                
+                </div>
+
+
+
+            </div>
+
+
+
+            <div class="content price_change">
+
+
+                <form action="change_haircut_price" class="price_change_form" id="hair_cut_form" method="POST">
+
+                    {%csrf_token%}
+
+                    <div id="haircut_heading"><h4>HAIRCUT</h4></div>
+
+                    <label for="hair_kids">Kids ₹</label> <input type="text" name="hair_kids" id="hair_kids" placeholder="₹">
+                    <label for="hair_male">Male ₹</label> <input type="text" name="hair_male" id="hair_male" placeholder="₹">
+                    <label for="hair_female">Female ₹</label> <input type="text" name="hair_female" id="hair_female" placeholder="₹">
+
+                    <button class="update_button">UPDATE</button>
+
+
+
+                </form>
+
+                <form action="change_massage_price" class="price_change_form" id="massage_form" method="POST">
+
+                    {%csrf_token%}
+
+                    <div  id="massage_heading"><h4>MASSAGE</h4>
+                    </div>
+                    <label for="massage_kids">Kids ₹</label> <input type="text" name="massage_kids" id="massage_kids" placeholder="₹">
+                    <label for="massage_male">Male ₹</label> <input type="text" name="massage_male" id="massage_male" placeholder="₹">
+                    <label for="massage_female">Female ₹</label> <input type="text" name="massage_female" id="massage_female" placeholder="₹">
+
+                    <button class="update_button">UPDATE</button>
+
+                </form>
+
+                <form action="change_makeup_price" class="price_change_form" id="makeup_form" method="POST">
+
+                    {%csrf_token%}
+
+                    <div id="makeup_heading"><h4>MAKEUP</h4></div>
+
+                    <label for="makeup_kids">Kids ₹</label> <input type="text" name="makeup_kids" id="makeup_kids" placeholder="₹">
+                    <label for="makeup_male">Male ₹</label> <input type="text" name="makeup_male" id="makeup_male" placeholder="₹">
+                    <label for="makeup_female">Female ₹</label> <input type="text" name="makeup_female" id="makeup_female" placeholder="₹">
+
+                    <button class="update_button">UPDATE</button>
+
+                </form>
+
+
+
+                <div class="price_update_success_message"><h4>Price Updated Successfully</h4><img src="{%static 'icons/tick_mark.png'%}" alt=""></div> 
+
+
+            </div>
+
+
+            
+
+           <div class="content offer_change_container">
+
+                <form action="offer_change" method="POST" class="offer_change_form">
+                    {%csrf_token%}
+                    <h2>UPDATE OFFERS</h2>
+                    <label for="haircut">Hair cut</label><input type="text" name="hair_cut_offer"class="input" id="haircut">
+                    <label for="massage">Massage</label><input type="text" name="massage_offer"class="input" id="massage">
+                    <label for="makeup">Makeup</label><input type="text" name="make_up_offer" class="input" id="makeup">
+
+                    <button class="update_button">UPDATE</button>
+
+
+                    <div class="offer_updated_message"><h4>Offer Successfully Updated</h4><img src="{%static 'icons/tick_mark.png'%}" alt=""></div> 
+
+
+                </form>
+
+
+           </div>
+
+           
+           
+
+
+        </div>
+
+    </div>
+
+    <!-- my js -->
+    <script src="{% static 'js/admin_home.js' %}"></script>
+    
+   
+    
+</body>
+</html>

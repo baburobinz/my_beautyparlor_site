@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {%load static%}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <!-- jquery   -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!--    bootstrap-->
+
+
+    <!-- my css -->
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+    <!-- fafa fonts -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abyssinica+SIL&family=Black+Ops+One&family=Cinzel+Decorative:wght@700&family=Great+Vibes&family=Lily+Script+One&family=Pinyon+Script&family=Rampart+One&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abyssinica+SIL&family=Black+Ops+One&family=Cinzel+Decorative:wght@700&family=Great+Vibes&family=Inter&family=Libre+Caslon+Text:wght@700&family=Lily+Script+One&family=Pinyon+Script&family=Rampart+One&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+   
+    <div class="parent-container">
+
+        <form action="booking" class="book_now_window" method="POST" id="booking_form">
+
+            {%csrf_token%}
+
+            <i class="close_button"><img src="static/images/close.png" alt="" onclick="close_booking_window()"></i>
+
+            <input type="text" placeholder="Name" name="name" required value="{{name}}">
+            <input type="text" placeholder="Mobile" name="mobile" required pattern="[0-9]{10}" value="{{mobile}}">
+
+
+            <select name="category" required class="category">
+
+                <option disabled selected value="">Category</option>
+                <option value="Kid">Kid</option>
+                <option value="Male(adult)">Male(adult)</option>
+                <option value="Female(Adult)">Female(Adult)</option>
+
+
+            </select>
+
+            <select name="service" required class="service">
+
+                <option disabled selected value="">Service</option>
+                <option value="Hair cut">Hair cut</option>
+                <option  value="Massage">Massage</option>
+                <option value="Makeup">Makeup</option>
+
+            </select>
+
+            <input type="date" required name="date" id="choose_booking_date">
+            <select name="slots" required class="slots">
+                <option disabled selected value="">Choose Time Slot</option>
+                <option value="8:00AM to 12:00PM">8:00AM to 12:00PM</option>
+                <option value="1:00PM to 5:00PM">1:00PM to 5:00PM</option>
+                <option value="5:00PM to 9:00PM">5:00PM to 9:00PM</option>
+            </select>
+
+            <input type="submit" value="Book Now" class="book_now_button">
+            <div class="booking_success_message"></div>
+           
+        </form>
+
+       
+
+
+       
+
+
+        
+
+        <div class="header">
+
+            <div class="nav">
+
+
+                <a href="#" class="navitem header_nav_item" onclick="nav_item_bg_change(0)">Home</a>
+                <a class="navitem" id="profile" onclick="nav_item_bg_change(1)">Profile <i class="fa fa-caret-down" id="profile_icon"></i></a>
+
+                <div class="profile_item">
+
+
+                    <a class="item item1" onclick="show_prof_submenu(0)">Change Username</a>
+                    <a class="item" onclick="show_prof_submenu(1)">Change Password</a>
+                    <a class="item" onclick="show_prof_submenu(2)" id="show_booking_details">Booking Details</a>
+        
+                </div>
+
+                <div class="profile_sub_menu">
+
+                    <div class="sub_header">
+
+
+                        <div class="booking_details_navbar">
+                            <a class="booking_navitem" onclick="show_submenu()">Sort By</a>
+                            <a class="booking_navitem" onclick="show_submenu2()">Clear</a>
+
+
+                        </div>
+
+
+
+
+                        <img src="static/images/close.png" alt="" id="close">
+
+                         <div class="booking_sort_submenu">
+                            <a id="latest">Latest</a>
+                            <a id="oldest">Oldest</a>
+                        </div>
+
+                        <div class="booking_sort_submenu2">
+                            <h4>Do you want to clear..?</h4>
+
+                            <div>
+                                <a class="clear_all_yes">Yes</a>
+                                <a class="clear_all_no">No</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <form action="change_username" class="submenu_item submenu_item1" method="POST" id="change_username_form">
+
+                        {%csrf_token%}
+
+                        <input type="text" placeholder="Current Username" name="current_username">
+                        <input type="text" placeholder="Current Password" name="current_password">
+                        <input type="text" placeholder="New Username" name="new_username">
+                        <button class="confirm">UPDATE</button>
+
+
+
+                    
+
+
+
+                    </form>
+
+
+
+
+
+                    <form action="change_password" class="submenu_item submenu_item2" method="POST" id="change_password_form">
+
+                        {%csrf_token%}
+
+                        <input type="text" placeholder="Current Username" name="current_username">
+                        <input type="text" placeholder="Current Password" name="current_password">
+                        <input type="text" placeholder="New Password" name="new_password">
+                        <button class="confirm">UPDATE</button>
+
+
+
+                    </form>
+
+
+                    <div class="UsernamePword_update_message"></div>
+
+
+                    <div class="cancel_alert">
+
+                        <h3>Do you want to cancel Booking.?</h2>
+
+                        <div class="yes_no">
+                            <a class="yes">Yes</a>
+                            <a class="no">No</a>
+                        </div>
+                    </div>
+
+
+                    
+                    <div class="item_table">
+
+                        <table class="booking_show_table" border="1">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Slot</th>
+                                    <th>Name</th>
+                                    <th>Massage</th>
+                                    <th>Token</th>
+                                    <th></th>
+                                
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+
+                        <div class="no_booking_message">No Booking Details</div>
+
+                        <div class="booking_cancelled_message">Booking Cancelled <img src="{%static 'icons/tick_mark.png'%}" class="tick_mark_booking_cancelled"></div>
+
+                    </div>
+
+                    
+
+                        
+
+                        
+
+
+                   
+
+                   
+
+
+
+
+
+                    
+
+                        
+
+                </div>
+
+                <a href="#service" class="navitem header_nav_item" onclick="nav_item_bg_change(2)">Services</a>
+                <a href="#offer" class="navitem header_nav_item" onclick="nav_item_bg_change(3)">Today's offer</a>
+                <a href="#gallery" class="navitem header_nav_item" onclick="nav_item_bg_change(4)">Gallery</a>
+                <a href="" class="navitem">About</a>
+                <a href="" class="navitem">Contact</a>
+                <a href="logout" class="navitem logout">Logout</a>
+
+                
+
+            </div>
+
+            
+
+            <div class="social-icons">
+                <img src="static/icons/Instagram - Negative.svg" alt="" class="icon">
+                <img src="static/icons/whatsapp.svg" alt="" class="icon">
+                <img src="static/icons/facebook.svg" alt="" class="icon">
+            </div>
+
+        </div>
+
+
+        
+
+        <div class="main">
+
+           
+
+
+            <div class="price">
+
+                <h1>EXCITING PRICES</h1>
+                <h2>Starts From</h2>
+
+            </div>
+
+            
+
+            <div class="price_item">
+
+                <div class="perspective">
+
+
+                    <div class="items bg1">
+                        <h3>MAKEUP</h3>
+
+                        {%if makeup_price%}
+
+    
+                        <div class="item_div">
+
+                            {%for i in makeup_price%}
+                            <item>Children      <span>₹{{i.Kids}}</span></item>
+                            <item>Adult(Male)   <span>₹{{i.Male}}</span></item>
+                            <item>adult(Female) <span>₹{{i.Female}}</span></item>
+                            {%endfor%}
+                        </div>
+
+                        {%endif%}
+                       
+                    
+                    
+                    </div>
+
+                    
+                </div>
+
+
+               
+
+                    <button class="booknow" onclick="show_booknow_window()">BOOK NOW</button>
+
+               
+
+                
+
+                
+
+                <div class="perspective">
+
+                    <div class="items bg2">
+                        <h3>MASSAGE</h3>
+
+                        {%if massage_price%}
+    
+                        <div class="item_div ">
+
+                            
+
+                            {%for i in massage_price%}
+    
+                            <item>Children      <span>₹{{i.Kids}}</span></item>
+                            <item>Adult(Male)   <span>₹{{i.Male}}</span></item>
+                            <item>adult(Female) <span>₹{{i.Female}}</span></item>
+
+                            {%endfor%}
+                            
+    
+                        </div>
+
+                        {%endif%}
+                    
+                    </div>
+                </div>
+
+                
+                
+
+            </div>
+
+
+            <div class="perspective">
+
+                <div class="items bg3">
+                    <h3>HAIR CUT</h3>
+
+                    {%if haircut_price%}
+
+                    <div class="item_div ">
+
+                        {%for i in haircut_price%}
+
+                        <item>Children      <span>₹{{i.Kids}}</span></item>
+                        <item>Adult(Male)   <span>₹{{i.Male}}</span></item>
+                        <item>adult(Female) <span>₹{{i.Female}}</span></item>
+
+                        {%endfor%}
+
+                    </div>
+
+                    {%endif%}
+                
+                
+                
+                </div>
+
+            </div>
+
+
+
+            <div class="services" id="service">
+
+                
+
+                <h1>OUR SERVICES</h1>
+
+                <div class="slider">
+
+                    
+                    <div class="slider_head">
+
+                        <span><img src="static/icons/arrow_left.svg" alt="" onclick="plusSlides(-1)"></span><h3> HAIRCUTS</h3><span><img src="static/icons/arrow_right.svg" alt=""  onclick="plusSlides(1)"></span>
+
+                    </div>
+
+                    <div class="img_and_services">
+
+                        <div class="image_container">
+
+
+                            <div>
+
+                                <img src="static/images/hair_cut_male.svg" alt="">
+                                <h4>MEN'S</h4>
+
+                            </div>
+
+                            <div>
+
+                                <img src="static/images/hair_cut_kid.svg" alt="">
+                                <h4>KIDS</h4>
+
+                            </div>
+                            
+                            <div>
+
+                                <img src="static/images/hair_cut_female.svg" alt="">
+    
+                                <h4>WOMAN'S</h4>
+                            </div>
+                           
+                           
+                        </div>  
+
+                        
+
+                    </div>
+
+                </div>
+
+                <div class="slider">
+
+                    <div class="slider_head">
+
+                        <span><img src="static/icons/arrow_left.svg" alt="" onclick="plusSlides(-1)"></span><h3> MASSAGES</h3><span><img src="static/icons/arrow_right.svg" alt="" onclick="plusSlides(1)"></span>
+
+                    </div>
+
+                    <div class="img_and_services">
+
+                        <div class="image_container">
+
+
+                            <div>
+
+                                <img src="static/images/massage1.svg" alt="">
+                                <h4>AROMATHERAPY</h4>
+
+                            </div>
+
+                            <div>
+
+                                <img src="static/images/massage2.svg" alt="">
+                                <h4>CRANIOSACRALTHERAPY</h4>
+
+                            </div>
+                            
+                            <div>
+
+                                <img src="static/images/massage3.svg" alt="">
+    
+                                <h4>HOT STONE</h4>
+                            </div>
+                           
+                           
+                        </div>  
+
+                        
+
+                    </div>
+
+
+                </div>
+
+
+                    
+                <div class="slider">
+
+
+                    <div class="slider_head">
+
+                        <span><img src="static/icons/arrow_left.svg" alt="" onclick="plusSlides(-1)"></span><h3> MAKEUPS</h3><span><img src="static/icons/arrow_right.svg" alt="" onclick="plusSlides(1)"></span>
+
+                    </div>
+
+                    <div class="img_and_services">
+
+                        <div class="image_container">
+
+
+                            <div>
+
+                                <img src="static/images/makeup1.svg" alt="">
+                                <h4>BRIDAL</h4>
+
+                            </div>
+
+                            <div>
+
+                                <img src="static/images/makeup2.svg" alt="">
+                                <h4>NATURAL</h4>
+
+                            </div>
+                            
+                            <div>
+
+                                <img src="static/images/makeup3.svg" alt="">
+    
+                                <h4>GROOM</h4>
+                            </div>
+                           
+                           
+                        </div>  
+
+                        
+
+                    </div>
+
+
+                </div>                   
+                    
+                
+
+            </div>
+
+            
+
+
+           <!-- todays offer -->
+
+            <div class="todays_offer" id="offer">
+
+                <h1>TODAY'S OFFER</h1>
+                    
+                <div class="img_and_services">
+
+                    <div class="image_container_offer">
+
+
+                        <div>
+
+                            <div class="offer_perspective">
+
+
+                                {%if todays_offer%}
+
+                                <div class="offer">
+
+                                    {%for i in todays_offer%}
+                                    <span>{{i.Massage}}</span> 
+                                    {%endfor%}
+                                    <span>Offer</span>
+                                    
+                                </div>
+
+                                {%endif%}
+                            </div>
+
+
+                            <img src="static/images/offer1.svg" alt="">
+                            <h4>MASSAGE</h4>
+
+                        </div>
+
+                        
+
+                        <div>
+
+
+                            <div class="offer_perspective">
+
+                                {%if todays_offer%}
+
+                                <div class="offer">
+
+                                    {%for i in todays_offer%}
+                                    <span>{{i.Haircut}}</span> 
+                                    {%endfor%}
+                                    <span>Offer</span>
+                                    
+                                </div>
+
+                                {%endif%}
+                            </div>
+
+
+                            <img src="static/images/offer2.svg" alt="">
+                            <h4>HAIRCUT</h4>
+
+                        </div>
+                        
+                        <div>
+
+                            <div class="offer_perspective">
+
+                                {%if todays_offer%}
+
+                                <div class="offer">
+
+                                    {%for i in todays_offer%}
+                                    <span>{{i.Makeup}}</span> 
+                                    {%endfor%}
+                                    <span>Offer</span>
+
+                                </div>
+
+                                {%endif%}
+                            </div>
+
+                            <img src="static/images/offer3.svg" alt="">
+
+                            <h4>MAKEUP</h4>
+                        </div>
+                        
+                        
+                    </div>  
+
+                    
+
+                </div>
+
+            </div>
+
+            <!-- gallery -->
+
+            <div class="gallery_parent" id="gallery">
+
+
+                <h1>GALLERY</h1>
+
+                
+
+
+                <div class="gallery_sub">
+
+                    
+
+                    <img src="static/images/gallery_arrow_left.svg" alt="" class="left_arrow index" onmouseover="img_bg_rotate()" onmouseleave="img_bg_normal()" onclick="plusSlidesGallery(-1)">
+
+                    <div class="gallery_image_bg">
+
+                    
+                       
+                        <div class="gallery_images">
+
+                            {%if gallery_images_display%}
+
+                            {%for i in gallery_images_display%}
+    
+
+                            <img src="{{i.image.url}}" alt="" srcset="" class="image1">
+
+                            {%endfor%}
+                            {%endif%}
+    
+                           
+    
+                        </div>
+
+                       
+                     
+                    </div>  
+
+                    <img src="static/images/gallery_arrow_right.svg" alt="" class="index right_arrow " onmouseover="img_bg_rotate()" onmouseleave="img_bg_normal()" onclick="plusSlidesGallery(1)">
+
+
+                </div>
+
+            </div>
+
+
+
+            <div class="footer"></div>
+
+
+        </div>
+
+    
+
+    </div>
+    
+    <!-- my javascript -->
+
+    <script src="{% static 'js/home.js' %}"></script>
+
+    
+
+
+</body>
+
+</html>
